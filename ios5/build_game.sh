@@ -61,9 +61,8 @@ cp -r $ROOT/files/timidity $APP/files/
 sed -i 's/\r$//' $APP/files/timidity/timidity.cfg
 sed -i '1i dir /Applications/fheroes2.app/files/timidity' $APP/files/timidity/timidity.cfg
 # Translations: the game expects .mo files in the 8-bit code page of its fonts (see files/lang/Makefile).
-for po in uk ru; do
-  python3 -I $IOS5_DIR/po2mo.py $ROOT/files/lang/$po.po $APP/files/lang/$po.mo cp1251
-done
+# The language list in the game is built from the .mo files present, so only Ukrainian is shipped.
+python3 -I $IOS5_DIR/po2mo.py $ROOT/files/lang/uk.po $APP/files/lang/uk.mo cp1251
 cp $IOS5_DIR/package/Info.plist $APP/
 [ -f $IOS5_DIR/package/Icon.png ] && cp $IOS5_DIR/package/Icon*.png $APP/
 
