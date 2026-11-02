@@ -60,11 +60,10 @@ cp $ROOT/files/data/resurrection.h2d $APP/files/data/
 cp -r $ROOT/files/timidity $APP/files/
 sed -i 's/\r$//' $APP/files/timidity/timidity.cfg
 sed -i '1i dir /Applications/fheroes2.app/files/timidity' $APP/files/timidity/timidity.cfg
-if command -v msgfmt > /dev/null; then
-  for po in uk ru en; do
-    [ -f $ROOT/files/lang/$po.po ] && msgfmt $ROOT/files/lang/$po.po -o $APP/files/lang/$po.mo
-  done
-fi
+# Translations: the game expects .mo files in the 8-bit code page of its fonts (see files/lang/Makefile).
+for po in uk ru; do
+  python3 -I $IOS5_DIR/po2mo.py $ROOT/files/lang/$po.po $APP/files/lang/$po.mo cp1251
+done
 cp $IOS5_DIR/package/Info.plist $APP/
 [ -f $IOS5_DIR/package/Icon.png ] && cp $IOS5_DIR/package/Icon*.png $APP/
 

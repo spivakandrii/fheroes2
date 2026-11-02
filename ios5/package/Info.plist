@@ -23,7 +23,10 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon.png</string>
+		<string>Icon-Small-50.png</string>
 	</array>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 	<key>MinimumOSVersion</key>
 	<string>5.0</string>
 	<key>UIDeviceFamily</key>
