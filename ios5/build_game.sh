@@ -41,7 +41,7 @@ xargs -P $JOBS -I{} sh -c '{}' < $OBJ/commands.txt
 rm -rf $DEPS/pkg && mkdir -p $APP
 # SDL 2.0.12 provides main() itself.
 rm -f $OBJ/ios_SDL_uikit_main.c.o
-$CXX -o $APP/fheroes2_bin $OBJ/*.o -nostdlib++ -L$PREFIX/lib -lSDL2_mixer -lSDL2 -lc++ -lc++abi -lz -liconv \
+$CXX -o $APP/fheroes2_bin $OBJ/*.o -nostdlib++ -L$PREFIX/lib -lSDL2_mixer -lvorbis -logg -lSDL2 -lc++ -lc++abi -lz -liconv \
   -framework UIKit -framework Foundation -framework QuartzCore -framework OpenGLES -framework CoreGraphics \
   -framework AudioToolbox -framework CoreAudio -framework AVFoundation -framework CoreMotion -dead_strip \
   -Wl,-flat_namespace
@@ -55,6 +55,11 @@ chmod 0755 $APP/fheroes2
 # Bundle resources: fheroes2 looks for files/ next to the executable.
 mkdir -p $APP/files/data $APP/files/lang
 cp $ROOT/files/data/resurrection.h2d $APP/files/data/
+# MIDI music (demo and DOS data) via Timidity with GUS patches. SDL_mixer 2.0.4 takes the config
+# from TIMIDITY_CFG (set by the launcher); instrument paths in it are relative, so point "dir" at them.
+cp -r $ROOT/files/timidity $APP/files/
+sed -i 's/\r$//' $APP/files/timidity/timidity.cfg
+sed -i '1i dir /Applications/fheroes2.app/files/timidity' $APP/files/timidity/timidity.cfg
 if command -v msgfmt > /dev/null; then
   for po in uk ru en; do
     [ -f $ROOT/files/lang/$po.po ] && msgfmt $ROOT/files/lang/$po.po -o $APP/files/lang/$po.mo

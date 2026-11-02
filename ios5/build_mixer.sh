@@ -1,5 +1,6 @@
 #!/bin/bash
-# Builds static SDL2_mixer 2.0.4 for iOS 5. For now only WAV/VOC/AIFF (game sounds).
+# Builds static SDL2_mixer 2.0.4 for iOS 5: WAV/VOC/AIFF sounds, OGG music (needs build_ogg.sh)
+# and MIDI through the built-in Timidity (uses fheroes2's files/timidity, see package/launcher.sh).
 set -e
 . "$(dirname "$0")/env.sh"
 
@@ -11,11 +12,16 @@ S=$DEPS/SDL_mixer-release-$V
 
 OBJ=$DEPS/build-mixer
 rm -rf $OBJ && mkdir -p $OBJ
-FLAGS="-O2 -I$PREFIX/include/SDL2 -DNDEBUG -DMUSIC_WAV"
+FLAGS="-O2 -I$PREFIX/include/SDL2 -I$PREFIX/include -I$S/timidity -DNDEBUG -DMUSIC_WAV -DMUSIC_OGG -DMUSIC_MID_TIMIDITY"
 
-for f in mixer music effect_position effect_stereoreverse effects_internal load_aiff load_voc music_wav; do
-  echo "$CC $FLAGS -c $S/$f.c -o $OBJ/$f.o"
-done | xargs -P $JOBS -I{} sh -c '{}'
+{
+  for f in mixer music effect_position effect_stereoreverse effects_internal load_aiff load_voc music_wav music_ogg music_timidity; do
+    echo "$CC $FLAGS -c $S/$f.c -o $OBJ/$f.o"
+  done
+  for f in common instrum mix output playmidi readmidi resample tables timidity; do
+    echo "$CC $FLAGS -c $S/timidity/$f.c -o $OBJ/timidity_$f.o"
+  done
+} | xargs -P $JOBS -I{} sh -c '{}'
 
 rm -f $PREFIX/lib/libSDL2_mixer.a
 $AR rc $PREFIX/lib/libSDL2_mixer.a $OBJ/*.o

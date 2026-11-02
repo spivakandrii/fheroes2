@@ -21,7 +21,8 @@ Dependencies and build output live in `~/fh2deps` (outside the repository).
 ```bash
 bash ios5/build_libcxx.sh   # once
 bash ios5/build_sdl.sh      # once
-bash ios5/build_mixer.sh    # once
+bash ios5/build_ogg.sh      # once
+bash ios5/build_mixer.sh    # once (after build_ogg.sh)
 bash ios5/build_game.sh     # incremental
 bash ios5/deploy.sh 192.168.1.130
 bash ios5/install_demo.sh 192.168.1.130   # free HoMM2 demo data
@@ -30,10 +31,12 @@ bash ios5/install_demo.sh 192.168.1.130   # free HoMM2 demo data
 Game data goes to `/var/mobile/Media/fheroes2/` (`data/`, `maps/`, `music/` from the original game).
 The log of the last run is `/var/mobile/Media/fheroes2/fheroes2.log`.
 
+Music: OGG tracks from `music/` (libvorbis), otherwise MIDI from HEROES2.AGG through SDL_mixer's Timidity
+with the GUS patches from `files/timidity` (the launcher sets `TIMIDITY_CFG`).
+
 `tests/build_cxxtest.sh` builds a small program that checks the static libc++ on the device.
 
 ## Not done yet
 
-- Music (SDL_mixer is built with WAV only)
 - Translations (`msgfmt` is needed to build `.mo` files)
 - App icon
