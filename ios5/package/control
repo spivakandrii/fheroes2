@@ -1,0 +1,8 @@
+Package: org.fheroes2.ios5
+Name: fheroes2 (Heroes II)
+Version: 1.1.17
+Architecture: iphoneos-arm
+Description: Free Heroes of Might and Magic II engine for iPad 1 (iOS 5). Put the original game data into /var/mobile/Media/fheroes2.
+Maintainer: Andrii Spivak
+Author: fheroes2 team
+Section: Games

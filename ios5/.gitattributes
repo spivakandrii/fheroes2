@@ -1,0 +1,4 @@
+# Scripts run inside WSL/Linux: keep LF even on a Windows checkout.
+*.sh text eol=lf
+*.py text eol=lf
+control text eol=lf
